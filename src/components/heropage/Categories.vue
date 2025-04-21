@@ -1,13 +1,29 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import axios from 'axios';
 import CategoriesCard from '../cards/CategoriesCard.vue';
 
-const categories = ref([
-  {id: 1, title:"Mobile UI Kit", image:"categories-1.jpg", count:"731"},
-  {id: 2, title:"Fonts", image:"categories-2.jpg", count:"657"},
-  {id: 3, title:"Icon Set", image:"categories-3.jpg", count:"83,559"},
-  {id: 4, title:"Website UI Kit", image:"categories-4.jpg", count:"4,500"}
-])
+// let categories = ref([
+//   {id: 1, title:"Mobile UI Kit", image:"categories-1.jpg", count:"731"},
+//   {id: 2, title:"Fonts", image:"categories-2.jpg", count:"657"},
+//   {id: 3, title:"Icon Set", image:"categories-3.jpg", count:"83,559"},
+//   {id: 4, title:"Website UI Kit", image:"categories-4.jpg", count:"4,500"}
+// ])
+
+let categories = ref()
+
+const getCategoriesData = async () => {
+  try {
+    const response = await axios.get('http://127.0.0.1:8000/api/categories?limit=4')
+    categories.value = response.data.data.data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+onMounted(() => {
+  getCategoriesData()
+})
 </script>
 
 <template>
@@ -16,10 +32,11 @@ const categories = ref([
     <div class="flex flex-wrap -mx-1 lg:-mx-4">
       <CategoriesCard 
         v-for="category in categories"
+        :id="category.id"
         :key="category.id"
-        :title="category.title"
-        :image="category.image"
-        :count="category.count"
+        :title="category.name"
+        :image="category.thumbnails"
+        :count="category.products_count"
       />
     </div>
   </div>

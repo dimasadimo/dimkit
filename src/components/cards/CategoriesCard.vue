@@ -1,6 +1,7 @@
 <script setup>
 import { RouterLink } from 'vue-router'
 defineProps({
+  id: Number,
   title: String,
   image: String,
   count: Number
@@ -12,13 +13,13 @@ defineProps({
     <div class="overflow-hidden border border-gray-200 rounded-xl">
       <RouterLink to="/">
         <div class="m-4 overflow-hidden rounded-xl">
-          <img :alt="title" class="block w-full h-auto" :src="'src/assets/img/' + image" />
+          <img :alt="title" class="block w-full h-auto" :src="image" />
         </div>
       </RouterLink>
 
       <header class="px-4 mb-4 leading-tight">
         <h1 class="text-lg">
-          <RouterLink class="font-semibold text-black no-underline hover:underline" to="/">
+          <RouterLink class="font-semibold text-black no-underline hover:underline" :to="{name: 'category-items', params: {id: id} }">
             {{ title }}
           </RouterLink>
         </h1>
